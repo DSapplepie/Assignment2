@@ -12,6 +12,8 @@ public class WaypointPatrol : MonoBehaviour
     public float fovDotThreshold = 0.8f; // 37 degree vision cone
     public float detectionRange = 10f; // can see within this range
 
+    public AudioSource alertSound;
+
     private Transform player;
     int m_CurrentWaypointIndex;
 
@@ -24,6 +26,9 @@ public class WaypointPatrol : MonoBehaviour
         GameObject p = GameObject.FindWithTag("Player");
         if (p != null) player = p.transform;
         else Debug.LogError("No object tagged 'Player' found.");
+
+        if (alertSound == null)
+            alertSound = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -35,6 +40,14 @@ public class WaypointPatrol : MonoBehaviour
 
             if (distance <= detectionRange)
             {
+//                Debug.Log("Player detected!");
+                //play alert sound
+                if (!alertSound.isPlaying)
+                {
+                    alertSound.Play();
+                    Debug.Log("ALERT SOUND PLAYED");
+                }
+
                 toPlayer.Normalize();
                 float dot = Vector3.Dot(transform.forward, toPlayer);
 
