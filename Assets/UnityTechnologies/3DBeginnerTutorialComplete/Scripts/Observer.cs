@@ -55,7 +55,7 @@ public class Observer : MonoBehaviour
             {
                 if (raycastHit.collider.transform == player)
                 {
-                    awareness = Mathf.Lerp(awareness, 1f, Time.deltaTime / 0.21f);
+                    awareness = Mathf.Lerp(awareness, 1f, Time.deltaTime / 0.25f);
                     Debug.Log("awareness = " + awareness.ToString());
                     currentAwareness = awareness;
                     awarenessBar.SetAwareness(currentAwareness);

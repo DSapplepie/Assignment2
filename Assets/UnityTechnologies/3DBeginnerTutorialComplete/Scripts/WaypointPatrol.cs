@@ -17,9 +17,11 @@ public class WaypointPatrol : MonoBehaviour
 
     public Material normalMaterial;
     public Material alertMaterial;
+    public float alertCooldown = 3f; // seconds between allowed plays
 
     private ParticleSystemRenderer psRenderer;
     private bool isSpotted = false;
+    private float lastAlertTime = -999f;
 
 
     private Transform player;
@@ -59,9 +61,10 @@ public class WaypointPatrol : MonoBehaviour
                     {
                         isSpotted = true;
                         psRenderer.material = alertMaterial;
-                        if (alertSound != null)
+                        if (alertSound != null && Time.time - lastAlertTime >= alertCooldown)
                         {
                             alertSound.Play();
+                            lastAlertTime = Time.time + alertSound.clip.length;
                         }
 //                        Debug.Log("Player spotted!");
                     }
