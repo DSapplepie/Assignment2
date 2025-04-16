@@ -12,7 +12,15 @@ public class WaypointPatrol : MonoBehaviour
     public float fovDotThreshold = 0.8f; // 37 degree vision cone
     public float detectionRange = 10f; // can see within this range
 
+    // materials & sounds
     public AudioSource alertSound;
+
+    public Material normalMaterial;
+    public Material alertMaterial;
+
+    private ParticleSystemRenderer psRenderer;
+    private bool isSpotted = false;
+
 
     private Transform player;
     int m_CurrentWaypointIndex;
@@ -27,8 +35,7 @@ public class WaypointPatrol : MonoBehaviour
         if (p != null) player = p.transform;
         else Debug.LogError("No object tagged 'Player' found.");
 
-        if (alertSound == null)
-            alertSound = GetComponent<AudioSource>();
+        psRenderer = GetComponent<ParticleSystemRenderer>();
     }
 
     void Update()
@@ -40,13 +47,7 @@ public class WaypointPatrol : MonoBehaviour
 
             if (distance <= detectionRange)
             {
-//                Debug.Log("Player detected!");
-                //play alert sound
-                if (!alertSound.isPlaying)
-                {
-                    alertSound.Play();
-                    Debug.Log("ALERT SOUND PLAYED");
-                }
+                
 
                 toPlayer.Normalize();
                 float dot = Vector3.Dot(transform.forward, toPlayer);
@@ -54,15 +55,44 @@ public class WaypointPatrol : MonoBehaviour
                 if (dot > fovDotThreshold)
                 {
                     navMeshAgent.speed = normalSpeed * spottedMultiplier;
+                    if (!isSpotted)
+                    {
+                        isSpotted = true;
+                        psRenderer.material = alertMaterial;
+                        if (alertSound != null)
+                        {
+                            alertSound.Play();
+                        }
+//                        Debug.Log("Player spotted!");
+                    }
+                    
                 }
                 else
                 {
                     navMeshAgent.speed = normalSpeed;
+                    if(isSpotted)
+                    {
+                        isSpotted = false;
+                        psRenderer.material = normalMaterial;
+                        if (alertSound != null)
+                        {
+                            alertSound.Stop();
+                        }
+                    }
                 }
             }
             else
             {
                 navMeshAgent.speed = normalSpeed;
+                if(isSpotted)
+                {
+                    isSpotted = false;
+                    psRenderer.material = normalMaterial;
+                    if (alertSound != null)
+                    {
+                        alertSound.Stop();
+                    }
+                }
             }
         }
 
