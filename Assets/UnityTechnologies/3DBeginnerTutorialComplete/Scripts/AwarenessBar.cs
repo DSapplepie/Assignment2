@@ -12,6 +12,6 @@ public class AwarenessBar : MonoBehaviour
    
    public void SetAwareness (float currentAwareness){
     slider.value = currentAwareness;
-    Debug.Log("AWARENESS ACCESSED: = " + slider.value.ToString());
+//    Debug.Log("AWARENESS ACCESSED: = " + slider.value.ToString());
    }
 }
