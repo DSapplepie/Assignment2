@@ -70,12 +70,5 @@ public class Observer : MonoBehaviour
             currentAwareness = awareness;
             awarenessBar.SetAwareness(currentAwareness);
         }
-        /*if (!m_IsPlayerInRange){
-            awareness = Mathf.Lerp(awareness, 0f, Time.deltaTime / 0.5f);
-            Debug.Log("awareness = " + awareness.ToString());
-            currentAwareness = awareness;
-            awarenessBar.SetAwareness(currentAwareness);
-        }*/
-
     }
 }
